@@ -13,7 +13,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupViewCode()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
@@ -37,6 +37,11 @@ class HomeFeedTableViewCell: UITableViewCell {
 }
 
 extension HomeFeedTableViewCell: ViewCode {
+    
+    func setupViews() {
+        buildHierarchy()
+        setupConstraints()
+    }
     
     func buildHierarchy() {
         self.addSubview(containerStackView)
