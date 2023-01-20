@@ -11,10 +11,3 @@ protocol ViewCode {
     func buildHierarchy()
     func setupConstraints()
 }
-
-extension ViewCode {
-    func setupViews() {
-        buildHierarchy()
-        setupConstraints()
-    }
-}

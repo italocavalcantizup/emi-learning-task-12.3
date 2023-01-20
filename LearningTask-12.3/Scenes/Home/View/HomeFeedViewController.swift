@@ -26,6 +26,11 @@ class HomeFeedViewController: UIViewController {
         setupViews()
     }
     
+    private func setupViews() {
+        setupViewCode()
+        viewModel?.delegate = self
+    }
+    
     private lazy var containerStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [
             tableView
@@ -46,12 +51,22 @@ class HomeFeedViewController: UIViewController {
     
 }
 
+// MARK: - HomeFeedViewModelDelegate
+extension HomeFeedViewController: HomeFeedViewModelDelegate {
+    
+    func homeFeedViewModel(_ viewModel: HomeFeedViewModel, postsLoaded: [Post]) {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+}
+
 // MARK: - TableView DataSource
 extension HomeFeedViewController: UITableViewDataSource {
 
     // - Data Source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return viewModel?.feed.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -77,6 +92,11 @@ extension HomeFeedViewController: UITableViewDelegate {
 
 // MARK: - ViewCode Protocol
 extension HomeFeedViewController: ViewCode {
+    
+    func setupViewCode() {
+        buildHierarchy()
+        setupConstraints()
+    }
     
     func buildHierarchy() {
         self.view.addSubview(containerStackView)

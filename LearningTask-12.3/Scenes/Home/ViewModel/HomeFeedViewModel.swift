@@ -7,6 +7,18 @@
 
 import Foundation
 
+protocol HomeFeedViewModelDelegate: AnyObject {
+    func homeFeedViewModel(_ viewModel: HomeFeedViewModel, postsLoaded: [Post])
+}
+
 final class HomeFeedViewModel {
+    
+    weak var delegate: HomeFeedViewModelDelegate?
+    
+    var feed: [Post] = [] {
+        didSet {
+            delegate?.homeFeedViewModel(self, postsLoaded: feed)
+        }
+    }
     
 }
