@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct Post {
-    let author: User
-    let createdAt: String
+struct Post: Codable {
     let id: Int
-    let imagePath: String
+    let createdAt: Date
+    let textContent: String?
+    let imagePath: String?
+    let author: User
     let loves: Int
     let replies: Int
     let reposts: Int
-    let textContent: String
 }

@@ -9,13 +9,10 @@ import UIKit
 
 class HomeFeedViewController: UIViewController {
     
-    var userAuthentication: UserAuthentication?
     var viewModel: HomeFeedViewModel?
     
-    convenience init(userAuthentication: UserAuthentication? = nil,
-                     viewModel: HomeFeedViewModel? = nil) {
+    convenience init(viewModel: HomeFeedViewModel) {
         self.init()
-        self.userAuthentication = userAuthentication
         self.viewModel = viewModel
     }
     
@@ -29,6 +26,7 @@ class HomeFeedViewController: UIViewController {
     internal func setupViews() {
         setupViewCode()
         viewModel?.delegate = self
+        viewModel?.loadFeed()
     }
     
     private lazy var containerStackView: UIStackView = {
@@ -73,6 +71,7 @@ extension HomeFeedViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.reuseIdentifier, for: indexPath) as? HomeFeedTableViewCell else {
             fatalError("Não foi possível obter a célula da lista de posts")
         }
+        cell.setup(post: viewModel?.feed[indexPath.row])
         return cell
     }
     

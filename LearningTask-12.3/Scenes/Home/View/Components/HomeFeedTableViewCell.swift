@@ -21,6 +21,22 @@ class HomeFeedTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func setup(post: Post?) {
+        guard let post = post else { return }
+        profileImageView.setImageByDowloading(url: post.author.profilePictureURL)
+        nameLabel.text = post.author.fullName
+        usernameLabel.text = "@\(post.author.username)"
+        dateLabel.text = getFormatedDate(date: post.createdAt)
+        tweetTextLabel.text = post.textContent
+        commentButton.count = String(describing: post.replies)
+        retweetButton.count = String(describing: post.reposts)
+        likeButton.count = String(describing: post.loves)
+    }
+    
+    private func getFormatedDate(date: Date) -> String {
+        return Date.now.getFormattedTimeInterval(since: date)
+    }
+    
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             pictureProfileStackView,
@@ -42,7 +58,9 @@ class HomeFeedTableViewCell: UITableViewCell {
         view.disableAutoResizing()
         view.axis = .vertical
         view.alignment = .top
-        view.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalTo: profileImageView.widthAnchor)
+        ])
         return view
     }()
     
@@ -65,7 +83,6 @@ class HomeFeedTableViewCell: UITableViewCell {
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
         ])
-        
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = imageSize.width / 2
         return imageView
@@ -110,16 +127,15 @@ class HomeFeedTableViewCell: UITableViewCell {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.disableAutoResizing()
-        label.text = "John Doe"
         label.font = .systemFont(ofSize: 14, weight: .bold)
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
     }()
     
     private lazy var usernameLabel: UILabel = {
         let label = UILabel()
         label.disableAutoResizing()
-        label.text = "@john-doe"
         label.font = .systemFont(ofSize: 14)
         label.textColor = .secondaryLabel
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -142,6 +158,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 14)
         label.textColor = .secondaryLabel
         label.text = "1d"
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
     }()
     
@@ -176,7 +193,6 @@ class HomeFeedTableViewCell: UITableViewCell {
     
     public lazy var commentButton: ActionButton = {
         let button = ActionButton()
-        button.disableAutoResizing()
         button.icon = UIImage(named: "BubbleChat")
         button.count = "0"
         button.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
@@ -246,5 +262,4 @@ extension HomeFeedTableViewCell: ViewCode {
             
         ])
     }
-    
 }

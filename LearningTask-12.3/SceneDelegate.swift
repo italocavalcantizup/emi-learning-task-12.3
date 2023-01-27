@@ -11,7 +11,7 @@ import UIKit
  Token para simular a authenticação de um usuário
  - ou você pode implementar a funcionalidade de login futuramente 😎🚀
  */
-let tokenValue = "<seu-token-de-authenticação-aqui>"
+let tokenValue = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUdWl0ciBBUEkiLCJzdWIiOiJpdGFsb2NhdmFsY2FudGl6dXAiLCJpYXQiOjE2NzQ4NDY2NDMsImV4cCI6MTY3NTQ1MTQ0M30.Vq2mN1Kf0RikYUf1VKIRhnmAvdWLApo7kpwiEkgNMPE"
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         let userAuthentication = UserAuthentication()
-        let viewModel = HomeFeedViewModel()
+        let viewModel = HomeFeedViewModel(api: TuitrAPI(httpRequest: HTTPRequest(userAuthentication: userAuthentication)))
         
         let authentication = Authentication(
             token: tokenValue,
@@ -41,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         userAuthentication.set(authentication)
         
-        let viewController = HomeFeedViewController(userAuthentication: userAuthentication, viewModel: viewModel)
+        let viewController = HomeFeedViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: viewController)
         
         window.rootViewController = navigation

@@ -13,34 +13,30 @@ protocol HomeFeedViewModelDelegate: AnyObject {
 
 final class HomeFeedViewModel {
     
+    var tuitrAPI: TuitrAPI?
+    
+    convenience init(api tuitrAPI: TuitrAPI) {
+        self.init()
+        self.tuitrAPI = tuitrAPI
+    }
+    
     weak var delegate: HomeFeedViewModelDelegate?
     
-    var feed: [Post] = [
-        Post(author: User(id: nil,
-                          fullName: "Italo Cavalcanti",
-                          username: "italocavalcanti",
-                          profilePictureURL: URL(string: "https://github.com/italocavalcantizup.png")!),
-             createdAt: "1d",
-             id: Int(Date.timeIntervalBetween1970AndReferenceDate),
-             imagePath: "Avatar",
-             loves: 2,
-             replies: 0,
-             reposts: 0,
-             textContent: "Meu tweet aqui. Meu tweet aqui. Meu tweet aqui. Meu tweet aqui."),
-        Post(author: User(id: nil,
-                          fullName: "Italo Cavalcanti",
-                          username: "italocavalcanti",
-                          profilePictureURL: URL(string: "https://github.com/italocavalcantizup.png")!),
-             createdAt: "1d",
-             id: Int(Date.timeIntervalBetween1970AndReferenceDate),
-             imagePath: "Avatar",
-             loves: 2,
-             replies: 0,
-             reposts: 0,
-             textContent: "Meu tweet aqui. Meu tweet aqui. Meu tweet aqui. Meu tweet aqui."),
-    ] {
+    var feed: [Post] = [] {
         didSet {
             delegate?.homeFeedViewModel(self, postsLoaded: feed)
+        }
+    }
+    
+    func loadFeed() {
+        guard let tuitrAPI = tuitrAPI else { return }
+        tuitrAPI.getFeedPosts { [weak self] result in
+            switch result {
+            case .success(let posts):
+                self?.feed = posts
+            case .failure(let error):
+                debugPrint(error)
+            }
         }
     }
     
