@@ -10,7 +10,7 @@ import UIKit
 class ActionButton: UIControl {
 
     override var intrinsicContentSize: CGSize {
-        return .init(width: 100,
+        return .init(width: .zero,
                      height: DesignConstants.iconSize.height)
     }
     
