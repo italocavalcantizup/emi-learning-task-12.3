@@ -26,7 +26,7 @@ class HomeFeedViewController: UIViewController {
         setupViews()
     }
     
-    private func setupViews() {
+    internal func setupViews() {
         setupViewCode()
         viewModel?.delegate = self
     }
@@ -73,13 +73,9 @@ extension HomeFeedViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeFeedTableViewCell.reuseIdentifier, for: indexPath) as? HomeFeedTableViewCell else {
             fatalError("Não foi possível obter a célula da lista de posts")
         }
-        cell.testeLabel.text = "Meu teste"
         return cell
     }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
+    
 }
 
 // MARK: - TableView Delegate

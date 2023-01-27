@@ -6,8 +6,16 @@
 //
 
 import Foundation
+import UIKit
 
 protocol ViewCode {
+    func setupViews()
     func buildHierarchy()
     func setupConstraints()
+}
+
+extension UIView {
+    func disableAutoResizing() {
+        translatesAutoresizingMaskIntoConstraints = false
+    }
 }

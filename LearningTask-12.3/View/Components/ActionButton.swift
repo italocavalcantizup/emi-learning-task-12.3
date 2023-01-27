@@ -7,10 +7,10 @@
 
 import UIKit
 
-@IBDesignable class ActionButton: UIControl {
-    
+class ActionButton: UIControl {
+
     override var intrinsicContentSize: CGSize {
-        return .init(width: .zero,
+        return .init(width: 100,
                      height: DesignConstants.iconSize.height)
     }
     
@@ -18,11 +18,6 @@ import UIKit
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .secondaryLabel
-        
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: DesignConstants.iconSize.width),
-            imageView.heightAnchor.constraint(equalToConstant: DesignConstants.iconSize.height),
-        ])
         return imageView
     }()
     
@@ -39,6 +34,7 @@ import UIKit
         let stackView = UIStackView(arrangedSubviews: [
             iconImageView, label
         ])
+        stackView.isUserInteractionEnabled = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fill
@@ -47,13 +43,13 @@ import UIKit
         return stackView
     }()
     
-    @IBInspectable var icon: UIImage? {
+    var icon: UIImage? {
         didSet {
             iconImageView.image = icon
         }
     }
     
-    @IBInspectable var count: String? {
+    var count: String? {
         didSet {
             guard let count = count,
                   let numberOfInteractions = Int(count),
@@ -76,7 +72,6 @@ import UIKit
     
     private func setup() {
         applyTheme()
-        
         addSubview(containerView)
         addConstraints()
     }
@@ -87,10 +82,13 @@ import UIKit
     
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             containerView.topAnchor.constraint(equalTo: self.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            iconImageView.widthAnchor.constraint(equalToConstant: DesignConstants.iconSize.width),
+            iconImageView.heightAnchor.constraint(equalToConstant: DesignConstants.iconSize.height),
         ])
     }
 }
