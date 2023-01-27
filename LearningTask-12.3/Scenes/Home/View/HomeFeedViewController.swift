@@ -31,7 +31,7 @@ class HomeFeedViewController: UIViewController {
     
     private lazy var containerStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [
-            tableView
+            tableView,
         ])
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .brown
@@ -45,6 +45,17 @@ class HomeFeedViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
+    }()
+    
+    private lazy var newTweetButton: UIButton = {
+        let button = UIButton()
+        button.disableAutoResizing()
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor.cornflowerBlue
+        button.layer.cornerRadius = 28
+        button.layer.masksToBounds = true
+        return button
     }()
     
 }
@@ -94,15 +105,21 @@ extension HomeFeedViewController: ViewCode {
     }
     
     func buildHierarchy() {
-        self.view.addSubview(containerStackView)
+        self.view.addSubview(tableView)
+        self.view.addSubview(newTweetButton)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            containerStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            containerStackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            containerStackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            containerStackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            
+            newTweetButton.heightAnchor.constraint(equalToConstant: 56),
+            newTweetButton.widthAnchor.constraint(equalToConstant: 56),
+            newTweetButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            newTweetButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
         ])
     }
     
