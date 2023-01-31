@@ -11,7 +11,7 @@ class HomeFeedViewController: UIViewController {
     
     var viewModel: HomeFeedViewModel?
     
-    convenience init(viewModel: HomeFeedViewModel) {
+    convenience init(viewModel: HomeFeedViewModel? = nil) {
         self.init()
         self.viewModel = viewModel
     }
@@ -47,16 +47,35 @@ class HomeFeedViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var newTweetButton: UIButton = {
+    private lazy var newPostButton: UIButton = {
         let button = UIButton()
         button.disableAutoResizing()
         button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(scale: .large), forImageIn: .normal)
         button.tintColor = .white
         button.backgroundColor = UIColor.cornflowerBlue
         button.layer.cornerRadius = 28
         button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(addNewPost), for: .touchUpInside)
+        button.addTarget(self, action: #selector(changeTintColor), for: [.touchDown, .touchDragEnter])
+        button.addTarget(self, action: #selector(resetTintColor), for: [.touchUpInside, .touchDragExit, .touchCancel])
         return button
     }()
+    
+    @objc private func changeTintColor() {
+        newPostButton.imageView?.tintColor = .cornflowerBlue
+    }
+    
+    @objc private func resetTintColor() {
+        newPostButton.imageView?.tintColor = .white
+    }
+    
+    @objc private func addNewPost() {
+        let newViewController = NewPostViewController(viewModel: NewPostViewModel())
+        newViewController.modalPresentationStyle = .fullScreen
+        self.present(newViewController, animated: true)
+    }
     
 }
 
@@ -106,7 +125,7 @@ extension HomeFeedViewController: ViewCode {
     
     func buildHierarchy() {
         self.view.addSubview(tableView)
-        self.view.addSubview(newTweetButton)
+        self.view.addSubview(newPostButton)
     }
     
     func setupConstraints() {
@@ -116,10 +135,10 @@ extension HomeFeedViewController: ViewCode {
             tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             
-            newTweetButton.heightAnchor.constraint(equalToConstant: 56),
-            newTweetButton.widthAnchor.constraint(equalToConstant: 56),
-            newTweetButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            newTweetButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            newPostButton.heightAnchor.constraint(equalToConstant: 56),
+            newPostButton.widthAnchor.constraint(equalToConstant: 56),
+            newPostButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            newPostButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
         ])
     }
     
