@@ -8,23 +8,35 @@
 import Foundation
 
 protocol NewPostViewModelDelegate: AnyObject {
-    func newPostViewModel(_ viewModel: NewPostViewModel, anyAction action: Any?)
+    func newPostViewModel(_ viewModel: NewPostViewModel, postCreated post: Post)
 }
 
 final class NewPostViewModel {
     
     weak var delegate: NewPostViewModelDelegate?
+    var tuitrAPI: TuitrAPI?
     var author: User?
-    var message: String? {
-        didSet {
-            // listener para limite
-        }
+    var message: String?
+    
+    convenience init(author: User, tuitrAPI: TuitrAPI) {
+        self.init()
+        self.author = author
+        self.tuitrAPI = tuitrAPI
     }
+    
     private let charactersLimitOfMessage = 280
     private var sendButtonIsEnabled = true
     
-    func sendNewPost() {
-        // enviar novo tweet
+    func sendNewPost(post: Post) {
+        guard let tuitrAPI = tuitrAPI else { return }
+        tuitrAPI.sendNewPost(newPost: post) { [weak self] result in
+            switch result {
+            case .success(let post):
+                self?.delegate?.newPostViewModel(self!, postCreated: post)
+            case .failure(let error):
+                debugPrint(error)
+            }
+        }
     }
     
 }

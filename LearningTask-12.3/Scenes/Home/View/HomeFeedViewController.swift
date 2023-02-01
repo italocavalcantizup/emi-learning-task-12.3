@@ -10,6 +10,7 @@ import UIKit
 class HomeFeedViewController: UIViewController {
     
     var viewModel: HomeFeedViewModel?
+    var refreshControl: UIRefreshControl!
     
     convenience init(viewModel: HomeFeedViewModel? = nil) {
         self.init()
@@ -23,8 +24,24 @@ class HomeFeedViewController: UIViewController {
         setupViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel?.loadFeed()
+    }
+    
+    private func setupRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+    }
+    
+    @objc func refresh() {
+        viewModel?.loadFeed()
+        refreshControl.endRefreshing()
+    }
+    
     internal func setupViews() {
         setupViewCode()
+        setupRefreshControl()
         viewModel?.delegate = self
         viewModel?.loadFeed()
     }
@@ -72,8 +89,11 @@ class HomeFeedViewController: UIViewController {
     }
     
     @objc private func addNewPost() {
+        let authenticatedUser = UserAuthentication().get()!.user
+        
         let newViewController = NewPostViewController(viewModel: NewPostViewModel())
         newViewController.modalPresentationStyle = .fullScreen
+        newViewController.viewModel = NewPostViewModel(author: authenticatedUser, tuitrAPI: TuitrAPI(httpRequest: HTTPRequest()))
         self.present(newViewController, animated: true)
     }
     
@@ -92,7 +112,6 @@ extension HomeFeedViewController: HomeFeedViewModelDelegate {
 // MARK: - TableView DataSource
 extension HomeFeedViewController: UITableViewDataSource {
 
-    // - Data Source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.feed.count ?? 0
     }
@@ -104,7 +123,6 @@ extension HomeFeedViewController: UITableViewDataSource {
         cell.setup(post: viewModel?.feed[indexPath.row])
         return cell
     }
-    
 }
 
 // MARK: - TableView Delegate

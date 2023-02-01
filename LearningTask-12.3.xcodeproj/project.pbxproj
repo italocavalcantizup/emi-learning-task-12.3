@@ -18,6 +18,8 @@
 		3ED70A8F29845E2600ED78CE /* TuitrAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED70A8E29845E2600ED78CE /* TuitrAPI.swift */; };
 		3ED70A9629880A3B00ED78CE /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED70A9529880A3B00ED78CE /* NewPostViewController.swift */; };
 		3ED70A9829880A4900ED78CE /* NewPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED70A9729880A4900ED78CE /* NewPostViewModel.swift */; };
+		3EFFD006298AABFA007F7AF2 /* SetInteractionConfiguration+UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFFD005298AABFA007F7AF2 /* SetInteractionConfiguration+UIButton.swift */; };
+		3EFFD008298AAFB6007F7AF2 /* HideKeyboard+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFFD007298AAFB6007F7AF2 /* HideKeyboard+UIViewController.swift */; };
 		58C4462D2941567F00B09398 /* SimpleAlert+UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C4462C2941567F00B09398 /* SimpleAlert+UIAlertController.swift */; };
 		58C4463229415B9E00B09398 /* UserAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C4463129415B9E00B09398 /* UserAuthentication.swift */; };
 		58C446392946691B00B09398 /* Branding+UIColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C446382946691B00B09398 /* Branding+UIColors.swift */; };
@@ -48,6 +50,8 @@
 		3ED70A8E29845E2600ED78CE /* TuitrAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TuitrAPI.swift; sourceTree = "<group>"; };
 		3ED70A9529880A3B00ED78CE /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
 		3ED70A9729880A4900ED78CE /* NewPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewModel.swift; sourceTree = "<group>"; };
+		3EFFD005298AABFA007F7AF2 /* SetInteractionConfiguration+UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SetInteractionConfiguration+UIButton.swift"; sourceTree = "<group>"; };
+		3EFFD007298AAFB6007F7AF2 /* HideKeyboard+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HideKeyboard+UIViewController.swift"; sourceTree = "<group>"; };
 		58C4462C2941567F00B09398 /* SimpleAlert+UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SimpleAlert+UIAlertController.swift"; sourceTree = "<group>"; };
 		58C4463129415B9E00B09398 /* UserAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthentication.swift; sourceTree = "<group>"; };
 		58C446382946691B00B09398 /* Branding+UIColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Branding+UIColors.swift"; sourceTree = "<group>"; };
@@ -262,6 +266,8 @@
 				58C4463A2947B08900B09398 /* TimeIntervals+Date.swift */,
 				3ED70A7D297B2B8000ED78CE /* ViewCode.swift */,
 				3ED70A8C29845C1600ED78CE /* Result.swift */,
+				3EFFD005298AABFA007F7AF2 /* SetInteractionConfiguration+UIButton.swift */,
+				3EFFD007298AAFB6007F7AF2 /* HideKeyboard+UIViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -344,6 +350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EFFD006298AABFA007F7AF2 /* SetInteractionConfiguration+UIButton.swift in Sources */,
 				58C4463229415B9E00B09398 /* UserAuthentication.swift in Sources */,
 				58CC8A48293FAECA00592B43 /* ImageDownload.swift in Sources */,
 				3ED70A76297B264100ED78CE /* HomeFeedViewModel.swift in Sources */,
@@ -363,6 +370,7 @@
 				3ED70A7E297B2B8000ED78CE /* ViewCode.swift in Sources */,
 				3ED70A78297B26B600ED78CE /* Post.swift in Sources */,
 				3ED70A892984565600ED78CE /* APIError.swift in Sources */,
+				3EFFD008298AAFB6007F7AF2 /* HideKeyboard+UIViewController.swift in Sources */,
 				58CC8A2B293E5DBB00592B43 /* AppDelegate.swift in Sources */,
 				58CC8A2D293E5DBB00592B43 /* SceneDelegate.swift in Sources */,
 				58CC8A582941013D00592B43 /* DecodingFormattedDates+JSONCoding.swift in Sources */,

@@ -10,6 +10,7 @@ import UIKit
 class NewPostViewController: UIViewController {
     
     var viewModel: NewPostViewModel?
+    let authenticatedUser = UserAuthentication().get()!.user
     var TOTAL_CHARACTERS = 280
     var placeholder = "What's happening?"
     
@@ -23,11 +24,13 @@ class NewPostViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         initiateSetup()
+        self.hideKeyboardWhenTappedAround()
     }
     
     private func initiateSetup() {
         setupViews()
         postTextView.delegate = self
+        viewModel?.delegate = self
     }
     
     private lazy var containerView: UIStackView = {
@@ -81,7 +84,8 @@ class NewPostViewController: UIViewController {
         
         let button = UIButton(configuration: config)
         button.disableAutoResizing()
-        button.isHighlighted = true
+        button.setInteractionConfiguration(isEnabled: true, isInteractionEnabled: false, isHighlighted: true)
+        button.addTarget(self, action: #selector(sendNewPost), for: .touchUpInside)
         return button
     }()
     
@@ -128,8 +132,6 @@ class NewPostViewController: UIViewController {
     }()
     
     private lazy var pictureProfileImageView: UIImageView = {
-        let authenticatedUser = UserAuthentication().get()!.user
-        
         let image = UIImageView()
         image.setImageByDowloading(url: authenticatedUser.profilePictureURL)
         
@@ -227,10 +229,24 @@ class NewPostViewController: UIViewController {
         
         let button = UIButton(configuration: config)
         button.disableAutoResizing()
-        button.setTitleColor(.cornflowerBlue, for: .normal)
         button.isUserInteractionEnabled = false
         return button
     }()
+    
+    @objc private func sendNewPost() {
+        let formatedDate = DateFormatter.format(date: Date.now, to: .dateAndTime)
+        
+        let post = Post(id: nil,
+                       createdAt: DateFormatter().date(from: formatedDate) ?? Date.now,
+                       reposting: nil,
+                       textContent: postTextView.text,
+                       imagePath: nil,
+                       author: authenticatedUser,
+                       loves: 0,
+                       replies: 0,
+                       reposts: 0)
+        viewModel?.sendNewPost(post: post)
+    }
     
     private func setButtonFont(title: String, ofSize: CGFloat, weight: UIFont.Weight) -> AttributedString {
         return AttributedString(title, attributes: AttributeContainer([.font : UIFont.systemFont(ofSize: ofSize, weight: weight)]))
@@ -256,13 +272,14 @@ extension NewPostViewController: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        let newTotal = String(TOTAL_CHARACTERS - Int(textView.text.count))
+        let newTotal = abs(TOTAL_CHARACTERS - Int(textView.text.count))
         totalCharactersButton.configuration?.attributedTitle = setButtonFont(title: String(newTotal), ofSize: 12, weight: .bold)
-        if textView.text.count <= TOTAL_CHARACTERS {
-            sendPostButton.isEnabled = true
+        
+        if Int(textView.text.count) <= TOTAL_CHARACTERS && Int(textView.text.count) > 0 {
+            sendPostButton.setInteractionConfiguration(isEnabled: true, isInteractionEnabled: true, isHighlighted: false)
             totalCharactersButton.configuration?.baseForegroundColor = .cornflowerBlue
         } else {
-            sendPostButton.isEnabled = false
+            sendPostButton.setInteractionConfiguration(isEnabled: true, isInteractionEnabled: false, isHighlighted: true)
             totalCharactersButton.configuration?.baseForegroundColor = .cinnabar
         }
     }
@@ -287,6 +304,11 @@ extension NewPostViewController: ViewCode {
             
         ])
     }
-    
-    
+}
+
+extension NewPostViewController: NewPostViewModelDelegate {
+    func newPostViewModel(_ viewModel: NewPostViewModel, postCreated post: Post) {
+        self.dismiss(animated: true)
+        print("New post added")
+    }
 }
